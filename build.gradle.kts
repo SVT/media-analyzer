@@ -1,26 +1,22 @@
 plugins {
-    `maven-publish`
-    signing
+    id("maven-publish")
     idea
     jacoco
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.20"
     id("com.github.fhermansson.assertj-generator") version "1.1.2"
-    id("org.jmailen.kotlinter") version "2.3.2"
+    id("org.jmailen.kotlinter") version "3.1.0"
     id("pl.allegro.tech.build.axion-release") version "1.10.2"
-    id("com.github.ben-manes.versions") version "0.28.0"
+    id("se.ascp.gradle.gradle-versions-filter") version "0.1.8"
+    id("se.svt.oss.gradle-yapp-publisher-plugin") version "0.1.13"
 }
 
-val PUBLISH_GROUP_ID by extra("se.svt.oss")
-val PUBLISH_VERSION by extra(scmVersion.version)
-val PUBLISH_ARTIFACT_ID by extra("media-analyzer")
 
-group = PUBLISH_GROUP_ID
-project.version = PUBLISH_VERSION
+group = "se.svt.oss"
+project.version = scmVersion.version
 
 apply {
     from("initial-version.gradle")
     from("checks.gradle")
-    from("publishing.gradle")
 }
 
 tasks.test {
@@ -47,6 +43,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("reflect"))
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.10.2")
     implementation("io.github.microutils:kotlin-logging:1.7.9")
     api("org.apache.commons:commons-math3:3.6.1")
@@ -68,5 +65,5 @@ tasks {
 
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = "6.4.1"
+    gradleVersion = "6.8.3"
 }
